@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-This module provides a function to measure the average runtime of executing
-multiple instances of the wait_n coroutine.
+function to measure the average runtime
 """
 
 from asyncio import run

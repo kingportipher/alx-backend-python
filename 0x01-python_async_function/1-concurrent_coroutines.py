@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-""" The basics of async """
+"""
+This module provides an asynchronous routine to execute multiple 
+instances of the wait_random coroutine and return the results.
+"""
 
 import asyncio
 from typing import List
@@ -9,7 +12,14 @@ wait_random = __import__('0-basic_async_syntax').wait_random
 
 async def wait_n(n: int, max_delay: int) -> List[float]:
     """
-    spawn wait_random n times with the specified max_delay.
+    Spawn wait_random n times with the specified max_delay.
+
+    Args:
+        n (int): The number of times to call wait_random.
+        max_delay (int): The maximum delay value for wait_random.
+
+    Returns:
+        List[float]: A list of delays in ascending order.
     """
     tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
     return [await task for task in asyncio.as_completed(tasks)]

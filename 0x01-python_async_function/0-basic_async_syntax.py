@@ -1,24 +1,34 @@
 #!/usr/bin/env python3
 """
-This module demonstrates the execution of an asynchronous coroutine in Python.
-It imports the `wait_random` coroutine from another module and runs it with 
-different `max_delay` values.
+This module defines an asynchronous coroutine `wait_random` that waits for a random delay.
 """
 
 import asyncio
-from typing import Any
+import random
 
 
-def main() -> None:
-    """
-    Execute the `wait_random` coroutine with various `max_delay` values 
-    and print the results.
-    """
-    wait_random = __import__('0-basic_async_syntax').wait_random
-    print(asyncio.run(wait_random()))
-    print(asyncio.run(wait_random(5)))
-    print(asyncio.run(wait_random(15)))
+async def wait_random(max_delay: float = 10.0) -> float:
+  """
+  This coroutine waits for a random delay between 0 and the provided max_delay (inclusive) seconds.
 
+  Args:
+      max_delay (float, optional): The upper bound for the random delay (inclusive). Defaults to 10.0.
 
+  Returns:
+      float: The actual random delay that the coroutine waited for.
+  """
+  delay = random.uniform(0, max_delay)
+  await asyncio.sleep(delay)
+  return delay
+
+# For testing purposes, only run this block if the script is executed directly
 if __name__ == "__main__":
-    main()
+  loop = asyncio.get_event_loop()
+  tasks = [
+      loop.run_in_executor(None, wait_random),
+      loop.run_in_executor(None, wait_random, 5),
+      loop.run_in_executor(None, wait_random, 15),
+  ]
+  results = loop.run_until_complete(asyncio.gather(*tasks))
+  for result in results:
+    print(result)

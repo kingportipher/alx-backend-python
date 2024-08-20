@@ -4,15 +4,14 @@
 This module defines an asynchronous coroutine `measure_runtime`
 """
 
-from . import async_comprehension  # Import async_comprehension from the previous file
-import time
+from typing import List
+from importlib import import_module as using
 
 
-async def measure_runtime():
+async_generator = using('0-async_generator').async_generator
+
+
+async def async_comprehension() -> List[float]:
+    """Creates a list of 10 numbers from a 10-number generator.
     """
-    Measures the total runtime of executing `async_comprehension`
-    """
-    start_time = time.perf_counter()  # Get start time with high precision
-    await asyncio.gather(*[async_comprehension() for _ in range(4)])
-    end_time = time.perf_counter()
-    return end_time - start_time
+    return [num async for num in async_generator()]
